@@ -7,13 +7,10 @@
 
 import UIKit
 
-final class CustomColorSelector: UIView {
+final class CustomColorSelector: UIStackView {
     // MARK: - Constants
     enum Constants {
         static let stackCornerRadius: CGFloat = 20
-        static let stackBorderWidth: CGFloat = 2
-        static let stackbackgroundColor: UIColor = .darkGray
-        static let stackBorderColor: CGColor = CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         
         static let defaultRedValue: Int = 0
         static let defaultGreenValue: Int = 0
@@ -37,8 +34,6 @@ final class CustomColorSelector: UIView {
     let redSlider: CustomSlider = CustomSlider(titel: Constants.red, textColor: Constants.redColor)
     let greenSlider: CustomSlider = CustomSlider(titel: Constants.green, textColor: Constants.greenColor)
     let blueSlider: CustomSlider = CustomSlider(titel: Constants.blue,textColor: Constants.blueColor)
-    
-    let stack: UIStackView = UIStackView()
     // MARK: - Properties
     var hexColor: String {
         String(format: "#%02X%02X%02X", red, green, blue)
@@ -53,29 +48,25 @@ final class CustomColorSelector: UIView {
         configureUI()
     }
     
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - Private Methods
-    private func configureUI() {
-        self.addSubview(stack)
-        
+    private func configureUI() {        
         configureStack()
         configureSliders()
     }
     
     private func configureStack() {
-        stack.pinCenter(to: self)
-        stack.pinLeft(to: leadingAnchor)
-        stack.pinTop(to: topAnchor)
+        self.pinCenter(to: self)
+        self.pinLeft(to: leadingAnchor)
+        self.pinTop(to: topAnchor)
         
-        stack.layer.cornerRadius = Constants.stackCornerRadius
-        stack.backgroundColor = Constants.stackbackgroundColor
-        stack.layer.borderWidth = Constants.stackBorderWidth
-        stack.layer.borderColor = Constants.stackBorderColor
+        self.layer.cornerRadius = Constants.stackCornerRadius
         
-        stack.axis = .vertical
-        stack.clipsToBounds = true
+        self.axis = .vertical
+        self.clipsToBounds = true
     }
     
     private func configureSliders() {
@@ -84,7 +75,7 @@ final class CustomColorSelector: UIView {
         blueSlider.setValue(Constants.defaultBlueValue)
         
         for slider in [redSlider, greenSlider, blueSlider] {
-            stack.addArrangedSubview(slider)
+            self.addArrangedSubview(slider)
             slider.valueChanged = { [weak self] value in
                 switch slider {
                 case self?.redSlider:

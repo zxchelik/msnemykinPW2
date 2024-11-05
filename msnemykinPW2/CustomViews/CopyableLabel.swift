@@ -16,10 +16,6 @@ class CopyableLabel: UIView {
         
         static let alertTitle: String = "Цвет скопирован!"
         static let alertDuration: TimeInterval = 1
-        
-        static let backgroundColor: UIColor = .darkGray
-        static let borderColor: CGColor = CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        static let borderWidth: CGFloat = 2
     }
     // MARK: - Fields
     let label: UILabel = {
@@ -45,9 +41,6 @@ class CopyableLabel: UIView {
     private func ConfigureUI() {
         addSubview(label)
         label.pinCenter(to: self)
-        self.layer.borderWidth = Constants.borderWidth
-        self.layer.borderColor = Constants.borderColor
-        self.backgroundColor = Constants.backgroundColor
     }
     
     private func ConfigureGesture() {
