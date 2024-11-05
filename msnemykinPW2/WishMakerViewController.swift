@@ -22,7 +22,7 @@ class WishMakerViewController: UIViewController {
         static let descriptionLabelNumberOfLines: Int = 0
         static let descriptionLabelLineBreakMode: NSLineBreakMode = .byWordWrapping
         
-        static let stackBottomConstraint: CGFloat = 40
+        static let stackBottomConstraint: CGFloat = 10
         static let stackLeadingConstraint: CGFloat = 20
         
         static let labelWidth: CGFloat = 85
@@ -30,27 +30,31 @@ class WishMakerViewController: UIViewController {
         static let labelBottomConstraint: CGFloat = 20
         static let labelTrailingConstraint: CGFloat = 10
         
-        static let visibleToggleConstraint: CGFloat = 20
         static let visibleToggleTitle: String = "Visible"
+        static let visibleToggleConstraint: CGFloat = 20
         static let visibleTitelConstraint: CGFloat = 10
         
         static let textViewCornerRadius: CGFloat = 20
         static let textViewBAlpha: CGFloat = 1
         static let textViewHorizontalConstraint: CGFloat = 20
         
+        static let buttonText: String = "Add wish"
+        static let buttonTrailingConstraint: CGFloat = 20
+        static let buttonHeight: CGFloat = 60
+        
         static let backgroundColor: UIColor = .darkGray
         static let borderColor: CGColor = CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         static let borderWidth: CGFloat = 2
         static let textColor: UIColor = .white
-        
     }
     // MARK: - Fields
-    var colorSelector = CustomColorSelector()
-    var colorLabel = CopyableLabel()
-    var visibleToggle = UISwitch()
-    var textView = UIView()
-    var titleLabel = UILabel()
-    var descriptionLabel = UILabel()
+    private let colorSelector = CustomColorSelector()
+    private let colorLabel = CopyableLabel()
+    private let visibleToggle = UISwitch()
+    private let textView = UIView()
+    private let titleLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    private let addWishButton: UIButton = UIButton(type: .system)
     // MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +64,7 @@ class WishMakerViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = colorSelector.color
 
+        configureAddWishButton()
         configureColorSelector()
         configureColorLAbel()
         configureTextView()
@@ -68,6 +73,27 @@ class WishMakerViewController: UIViewController {
         configureVisibleToggle()
     }
     
+    // MARK: configureAddWishButton
+    private func configureAddWishButton() {
+        view.addSubview(addWishButton)
+        
+        addWishButton.backgroundColor = Constants.backgroundColor
+        addWishButton.layer.borderWidth = Constants.borderWidth
+        addWishButton.layer.borderColor = Constants.borderColor
+        addWishButton.setTitleColor(Constants.textColor, for: .normal)
+        
+        addWishButton.setTitleColor(Constants.textColor, for: .normal)
+        addWishButton.setTitle(Constants.buttonText, for: .normal)
+        
+        addWishButton.setHeight(Constants.buttonHeight)
+        addWishButton.layer.cornerRadius = Constants.buttonHeight / 2
+        addWishButton.pinHorizontal(to: view,Constants.stackLeadingConstraint)
+        addWishButton.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor, Constants.buttonTrailingConstraint)
+        
+        addWishButton.addTarget(self, action: #selector(onAddWishTapped), for: .touchUpInside)
+    }
+    
+    // MARK: configureColorSelector
     private func configureColorSelector() {
         view.addSubview(colorSelector)
         
@@ -75,7 +101,7 @@ class WishMakerViewController: UIViewController {
         colorSelector.layer.borderWidth = Constants.borderWidth
         colorSelector.layer.borderColor = Constants.borderColor
         
-        colorSelector.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor, Constants.stackBottomConstraint)
+        colorSelector.pinBottom(to: addWishButton.topAnchor, Constants.stackBottomConstraint)
         colorSelector.pinLeft(to: view.safeAreaLayoutGuide.leadingAnchor, Constants.stackLeadingConstraint)
         colorSelector.pinCenterX(to: view.safeAreaLayoutGuide.centerXAnchor)
         
@@ -85,6 +111,7 @@ class WishMakerViewController: UIViewController {
         }
     }
     
+    // MARK: configureColorLAbel
     private func configureColorLAbel() {
         view.addSubview(colorLabel)
         
@@ -102,6 +129,7 @@ class WishMakerViewController: UIViewController {
         colorLabel.layer.cornerRadius = Constants.labelHeight / 2
     }
     
+    // MARK: configureVisibleToggle
     private func configureVisibleToggle() {
         let titel = UILabel()
         titel.text = Constants.visibleToggleTitle
@@ -125,6 +153,7 @@ class WishMakerViewController: UIViewController {
         titel.pinRight(to: visibleToggle.leadingAnchor, Constants.visibleTitelConstraint)
     }
     
+    // MARK: configureTextView
     private func configureTextView() {
         view.addSubview(textView)
         
@@ -138,6 +167,7 @@ class WishMakerViewController: UIViewController {
         textView.pinHorizontal(to: view, Constants.textViewHorizontalConstraint)
     }
     
+    // MARK: configureTitle
     private func configureTitle() {
         textView.addSubview(titleLabel)
         
@@ -149,6 +179,7 @@ class WishMakerViewController: UIViewController {
         titleLabel.pinTop(to: textView.topAnchor, Constants.titleTop)
     }
     
+    // MARK: configureDescription
     private func configureDescription() {
         textView.addSubview(descriptionLabel)
         
@@ -163,16 +194,17 @@ class WishMakerViewController: UIViewController {
         descriptionLabel.pinLeft(to: titleLabel.leadingAnchor, Constants.descriptionLeading)
         descriptionLabel.pinTop(to: titleLabel.bottomAnchor, Constants.descriptionTop)
     }
+    
+    
     // MARK: - Objc methods
     @objc
     private func onVisibleToggleChanged(sender: UISwitch) {
         self.colorSelector.isHidden = !self.colorSelector.isHidden
         self.colorLabel.isHidden = !self.colorLabel.isHidden
     }
+    
+    @objc
+    private func onAddWishTapped() {
+        self.present(WishStoringViewController(), animated: true)
+    }
 }
-
-
-
-
-
-
